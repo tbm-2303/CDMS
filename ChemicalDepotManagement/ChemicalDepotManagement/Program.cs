@@ -1,4 +1,7 @@
 
+using ChemicalDepotManagement.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace ChemicalDepotManagement
 {
     public class Program
@@ -8,8 +11,13 @@ namespace ChemicalDepotManagement
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+
+            // Add MySQL database connection
+            var connectionString = builder.Configuration.GetConnectionString("MySQLConnection");
+            builder.Services.AddDbContext<DepotContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -24,12 +32,8 @@ namespace ChemicalDepotManagement
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
