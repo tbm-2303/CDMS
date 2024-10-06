@@ -1,23 +1,18 @@
-﻿using System;
+﻿using ChemicalDepotManagement.Models.ChemicalDepotManagement.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ChemicalDepotManagement.Models
 {
     public class Job
     {
-        [Key]
-        public int JobId { get; set; }
+        public int Id { get; set; } // Primary Key
+        public string JobDescription { get; set; } // Description of the Job
+        public ICollection<Chemical> Chemicals { get; set; } // Collection of Chemicals related to this Job
 
-        [Required]
-        public string JobType { get; set; }  // Delivery or Dispatch
-
-        [Required]
-        public string Status { get; set; }  // Pending or Confirmed
-
-        [Required]
-        public DateTime JobDate { get; set; }
-
-        [Required]
-        public int ChemicalId { get; set; }  // Foreign key
+        public Job()
+        {
+            Chemicals = new List<Chemical>(); // Initialize the collection
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace ChemicalDepotManagement.Migrations
 
                     b.HasKey("ChemicalId");
 
-                    b.ToTable("Chemicals");
+                    b.ToTable("Chemicals", (string)null);
                 });
 
             modelBuilder.Entity("ChemicalDepotManagement.Models.Job", b =>
@@ -70,7 +70,7 @@ namespace ChemicalDepotManagement.Migrations
 
                     b.HasKey("JobId");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("Jobs", (string)null);
                 });
 #pragma warning restore 612, 618
         }
