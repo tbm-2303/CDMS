@@ -1,32 +1,27 @@
-﻿using ChemicalDepotManagement.Models.ChemicalDepotManagement.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ChemicalDepotManagement.Models
 {
     public class DepotContext : DbContext
     {
-        public DepotContext(DbContextOptions<DepotContext> options)
-            : base(options)
-        {
-        }
+        public DepotContext(DbContextOptions<DepotContext> options) : base(options) { }
 
-        public DbSet<Ticket> Tickets { get; set; } // DbSet for Tickets
-        public DbSet<Job> Jobs { get; set; } // DbSet for Jobs
-        public DbSet<Chemical> Chemicals { get; set; } // DbSet for Chemicals
+        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<Chemical> Chemicals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure relationships if needed
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Job)
-                .WithOne()
-                .HasForeignKey<Ticket>(t => t.JobId);
+            // Configuring relationships
+            modelBuilder.Entity<Chemical>()
+                .HasOne(c => c.Job)          // A chemical has one job
+                .WithMany(j => j.Chemicals) // A job has many chemicals
+                .HasForeignKey(c => c.JobId); // Foreign key for Chemical
 
-            modelBuilder.Entity<Job>()
-                .HasMany(j => j.Chemicals)
-                .WithOne(c => c.Job)
-                .HasForeignKey(c => c.JobId);
+            modelBuilder.Entity<Chemical>()
+                .HasOne(c => c.Warehouse)   // A chemical has one warehouse
+                .WithMany(w => w.Chemicals) // A warehouse has many chemicals
+                .HasForeignKey(c => c.WarehouseId); // Foreign key for Warehouse
         }
     }
 }
-
